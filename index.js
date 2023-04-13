@@ -1,18 +1,41 @@
 const express = require('express');
+const bodyParser = require('body-parser');
+
 const app = express();
+app.use(bodyParser.json());
+
+let lightsOn = false;
+let variable1 = 0;
+let variable2 = 0;
+
+app.get('/lights', (req, res) => {
+  res.json({ lightsOn });
+});
+
+app.post('/lights', (req, res) => {
+  lightsOn = req.body.value;
+  res.json({ success: true });
+});
+
+app.get('/variable1', (req, res) => {
+  res.json({ variable1 });
+});
+
+app.post('/variable1', (req, res) => {
+  variable1 = req.body.value;
+  res.json({ success: true });
+});
+
+app.get('/variable2', (req, res) => {
+  res.json({ variable2 });
+});
+
+app.post('/variable2', (req, res) => {
+  variable2 = req.body.value;
+  res.json({ success: true });
+});
+
 const port = process.env.PORT || 3000;
-
-app.get('/', (req, res) => {
-  res.send('Bem-vindo à API de controle de luzes e velocidade!');
-});
-
-app.get('/api/controle', (req, res) => {
-  const luzes = Math.random() < 0.5 ? true : false;
-  const velocidade = Math.floor(Math.random() * 11);
-
-  res.send({ luzes, velocidade });
-});
-
 app.listen(port, () => {
-  console.log(`Servidor rodando na porta ${port}`);
+  console.log(`API listening on port ${port}`);
 });
