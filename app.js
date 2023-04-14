@@ -1,20 +1,23 @@
 const express = require('express');
+const bodyParser = require('body-parser');
+
 const app = express();
 
-// Configuração do middleware para lidar com dados em formato JSON
-app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
-// Rota para atualizar as luzes
-let lightsOn = false;
+let lightsOn = "";
+
 app.post('/lights', (req, res) => {
   lightsOn = req.body.value;
   res.json({ success: true });
 });
 
-// Rota para obter o status das luzes
 app.get('/lights', (req, res) => {
-  res.json({ lightsOn });
+  const lights = JSON.parse(lightsOn);
+  res.json(lights);
 });
 
-// Inicialização do servidor
-app.listen(3000, () => console.log('API rodando na porta 3000.'));
+app.listen(3000, () => {
+  console.log('Server listening on port 3000');
+});
