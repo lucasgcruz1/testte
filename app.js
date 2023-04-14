@@ -3,21 +3,20 @@ const bodyParser = require('body-parser');
 
 const app = express();
 
-app.use(bodyParser.urlencoded({ extended: false }));
+let lightsOn = false;
+
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-let lightsOn = "";
+app.get('/lights', (req, res) => {
+  res.json({ value: lightsOn });
+});
 
 app.post('/lights', (req, res) => {
   lightsOn = req.body.value;
-  res.json({ success: true });
-});
-
-app.get('/lights', (req, res) => {
-  const lights = JSON.parse(lightsOn);
-  res.json(lights);
+  res.json({ success: true, value: lightsOn });
 });
 
 app.listen(3000, () => {
-  console.log('Server listening on port 3000');
+  console.log('Server is listening on port 3000');
 });
